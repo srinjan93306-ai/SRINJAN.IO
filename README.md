@@ -56,7 +56,7 @@ Currently not open for public contributions, but feel free to fork or suggest id
 
 ## 📫 Contact
 
-Made with ❤ by [Srinjan]  
+Made with ❤ by Srinjan
 GitHub: [@srinjan93306-ai](https://github.com/srinjan93306-ai)
 
 
