@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Code, Play, ChevronRight, Zap, Clock, BarChart3 } from 'lucide-react';
+import { BookOpen, Code, Play, ChevronRight, Zap, Clock, BarChart3, Globe } from 'lucide-react';
 
 export const DSAReference: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('arrays');
@@ -1500,9 +1500,9 @@ void unionSets(int parent[], int rank[], int x, int y) {
             <div className="bg-gradient-to-r from-indigo-900 to-indigo-800 px-4 py-3 border-b border-gray-700">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-white">SRINJAN Syntax</h3>
-                <button className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md transition-colors text-sm">
+                <button className="flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-2 rounded-lg transition-all transform hover:scale-105 shadow-lg">
                   <Play className="w-4 h-4" />
-                  <span>Run Code</span>
+                  <span className="font-semibold">Execute Code</span>
                 </button>
               </div>
             </div>
@@ -1544,9 +1544,9 @@ void unionSets(int parent[], int rank[], int x, int y) {
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
           <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <button className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg transition-colors">
+            <button className="flex items-center justify-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-3 rounded-lg transition-all transform hover:scale-105 shadow-lg">
               <Play className="w-4 h-4" />
-              <span>Run Example</span>
+              <span className="font-semibold">Execute</span>
             </button>
             <button className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition-colors">
               <Code className="w-4 h-4" />
