@@ -182,12 +182,13 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({
         {terminalHistory.length === 0 && !currentLine && !isTyping && (
           <div className="flex flex-col items-center justify-center h-full text-gray-500">
             <Terminal className="w-16 h-16 mb-4 opacity-50" />
-            <p className="text-lg mb-2">SRINJAN Terminal Ready</p>
-            <p className="text-sm">Run your code to see output here</p>
+            <p className="text-lg mb-2">🚀 SRINJAN Terminal Ready</p>
+            <p className="text-sm">Execute your code to see beautiful results here</p>
             <div className="mt-4 text-xs">
-              <p>• Real-time execution results</p>
-              <p>• Syntax highlighting</p>
-              <p>• Performance metrics</p>
+              <p>✨ Real-time execution with emojis</p>
+              <p>🎨 Beautiful output formatting</p>
+              <p>📊 Complete program flow visualization</p>
+              <p>🤖 AI assistant for help</p>
             </div>
           </div>
         )}

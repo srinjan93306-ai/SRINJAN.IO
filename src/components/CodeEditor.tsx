@@ -30,12 +30,12 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const getSrinjanExamples = () => {
     return {
-      hello: getTranslation(humanLanguage, 'helloWorld'),
-      input: getTranslation(humanLanguage, 'userInput'),
-      loop: getTranslation(humanLanguage, 'loop'),
-      condition: `${getTranslation(humanLanguage, 'if')} age > 18\n  ${getTranslation(humanLanguage, 'display')} "Adult"\n${getTranslation(humanLanguage, 'otherwise')}\n  ${getTranslation(humanLanguage, 'display')} "Minor"\n${getTranslation(humanLanguage, 'endif')}`,
-      array: `${getTranslation(humanLanguage, 'create')} ${getTranslation(humanLanguage, 'array')} numbers SIZE 5\n${getTranslation(humanLanguage, 'store')} 10 AT numbers[0]\n${getTranslation(humanLanguage, 'display')} numbers[0]`,
-      function: `${getTranslation(humanLanguage, 'function')} calculate(x, y)\n  ${getTranslation(humanLanguage, 'return')} x + y\n${getTranslation(humanLanguage, 'endfunction')}\n\n${getTranslation(humanLanguage, 'call')} calculate(5, 3)`
+      hello: getTranslation(humanLanguage, 'helloWorld') || 'DISPLAY "Hello World!"',
+      input: getTranslation(humanLanguage, 'userInput') || 'INPUT BY USER name\nDISPLAY "Hello " + name',
+      loop: getTranslation(humanLanguage, 'loop') || 'REPEAT 5 TIMES\n  DISPLAY "Iteration"\nEND REPEAT',
+      calculator: `${getTranslation(humanLanguage, 'input') || 'INPUT BY USER'} num1\n${getTranslation(humanLanguage, 'input') || 'INPUT BY USER'} num2\n${getTranslation(humanLanguage, 'calculate') || 'CALCULATE'} result = num1 + num2\n${getTranslation(humanLanguage, 'display') || 'DISPLAY'} "Result: " + result`,
+      array: `${getTranslation(humanLanguage, 'create') || 'CREATE'} ARRAY numbers SIZE 5\nSTORE 10 AT numbers[0]\nSTORE 20 AT numbers[1]\n${getTranslation(humanLanguage, 'display') || 'DISPLAY'} numbers[0]`,
+      stack: `${getTranslation(humanLanguage, 'create') || 'CREATE'} STACK myStack\nPUSH myStack VALUE 10\nPUSH myStack VALUE 20\n${getTranslation(humanLanguage, 'display') || 'DISPLAY'} POP myStack`
     };
   };
 
