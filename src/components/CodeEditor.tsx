@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Copy, Save, Settings } from 'lucide-react';
+import { Play, Copy, Save, Settings, Square } from 'lucide-react';
 import { getTranslation } from '../utils/languageTranslations';
 
 interface CodeEditorProps {
