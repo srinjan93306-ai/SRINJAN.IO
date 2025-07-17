@@ -117,18 +117,23 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           <div className="flex items-center space-x-3">
             <button
               onClick={onRun}
-              className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+              className="flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-2 rounded-lg transition-all transform hover:scale-105 shadow-lg"
             >
               <Play className="w-4 h-4" />
-              <span>Run Code</span>
+              <span className="font-semibold">Execute Code</span>
             </button>
-            <div className="text-sm text-gray-400">
-              Ready to execute in your preferred language
+            <button className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+              <Square className="w-4 h-4" />
+              <span>Stop</span>
+            </button>
+            <div className="text-sm text-gray-400 flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span>Ready to execute</span>
             </div>
           </div>
           <div className="text-sm text-gray-400">
-            Language: <span className="text-indigo-400">{languages.find(l => l.id === selectedLanguage)?.name}</span> | 
-            Human Language: <span className="text-green-400">{humanLanguage.toUpperCase()}</span>
+            Syntax: <span className="text-indigo-400">{languages.find(l => l.id === selectedLanguage)?.name}</span> | 
+            Language: <span className="text-green-400">{humanLanguage.toUpperCase()}</span>
           </div>
         </div>
       </div>

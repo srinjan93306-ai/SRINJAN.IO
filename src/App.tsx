@@ -18,25 +18,69 @@ function App() {
   const runCode = () => {
     // Simulate code execution with SRINJAN syntax
     const lines = code.split('\n');
-    let result = '';
+    let result = [];
+    let variables = {};
     
     lines.forEach(line => {
       const trimmed = line.trim();
+      if (!trimmed) return;
+      
       if (trimmed.startsWith('DISPLAY')) {
-        const content = trimmed.substring(8).trim();
-        result += content.replace(/['"]/g, '') + '\n';
+        const content = trimmed.substring(8).trim().replace(/['"]/g, '');
+        // Handle variable substitution
+        let output = content;
+        Object.keys(variables).forEach(varName => {
+          output = output.replace(new RegExp(`\\b${varName}\\b`, 'g'), variables[varName]);
+        });
+        result.push(output);
       } else if (trimmed.startsWith('INPUT BY USER')) {
-        result += 'User input received\n';
+        const varName = trimmed.substring(13).trim();
+        variables[varName] = 'UserInput';
+        result.push(`Input received for variable: ${varName}`);
       } else if (trimmed.startsWith('CALCULATE')) {
-        result += 'Calculation executed\n';
+        const expression = trimmed.substring(9).trim();
+        result.push(`Calculation: ${expression}`);
       } else if (trimmed.startsWith('REPEAT')) {
-        result += 'Loop executed\n';
+        const times = trimmed.match(/\d+/)?.[0] || '1';
+        result.push(`Starting loop (${times} iterations)`);
+        for (let i = 1; i <= parseInt(times); i++) {
+          result.push(`  Iteration ${i}`);
+        }
+        result.push('Loop completed');
       } else if (trimmed.startsWith('IF')) {
-        result += 'Condition checked\n';
+        const condition = trimmed.substring(2).trim();
+        result.push(`Checking condition: ${condition}`);
+        result.push('Condition evaluated: true');
+      } else if (trimmed.startsWith('CREATE ARRAY')) {
+        const parts = trimmed.split(' ');
+        const arrayName = parts[2];
+        const size = parts[4] || '10';
+        variables[arrayName] = `Array[${size}]`;
+        result.push(`Created array: ${arrayName} with size ${size}`);
+      } else if (trimmed.startsWith('CREATE STACK')) {
+        const stackName = trimmed.split(' ')[2];
+        variables[stackName] = 'Stack[]';
+        result.push(`Created stack: ${stackName}`);
+      } else if (trimmed.startsWith('PUSH')) {
+        const parts = trimmed.split(' ');
+        const stackName = parts[1];
+        const value = parts[3] || 'value';
+        result.push(`Pushed ${value} to ${stackName}`);
+      } else if (trimmed.startsWith('POP')) {
+        const stackName = trimmed.split(' ')[1];
+        result.push(`Popped value from ${stackName}`);
+      } else if (trimmed.startsWith('FUNCTION')) {
+        const funcName = trimmed.split(' ')[1];
+        result.push(`Defined function: ${funcName}`);
+      } else if (trimmed.startsWith('CALL')) {
+        const funcName = trimmed.split(' ')[1];
+        result.push(`Called function: ${funcName}`);
+        result.push(`Function ${funcName} executed successfully`);
       }
     });
     
-    setOutput(result || 'Code executed successfully!');
+    const finalOutput = result.length > 0 ? result.join('\n') : 'Code executed successfully!';
+    setOutput(finalOutput);
   };
 
   return (
