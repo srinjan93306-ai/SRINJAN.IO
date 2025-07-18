@@ -36,8 +36,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       input: getTranslation(humanLanguage, 'userInput') || 'INPUT BY USER name\nDISPLAY "Hello " + name',
       loop: getTranslation(humanLanguage, 'loop') || 'REPEAT 5 TIMES\n  DISPLAY "Iteration"\nEND REPEAT',
       calculator: `${getTranslation(humanLanguage, 'input') || 'INPUT BY USER'} num1\n${getTranslation(humanLanguage, 'input') || 'INPUT BY USER'} num2\n${getTranslation(humanLanguage, 'calculate') || 'CALCULATE'} result = num1 + num2\n${getTranslation(humanLanguage, 'display') || 'DISPLAY'} "Result: " + result`,
-      array: `${getTranslation(humanLanguage, 'create') || 'CREATE'} ARRAY numbers SIZE 5\nSTORE 10 AT numbers[0]\nSTORE 20 AT numbers[1]\n${getTranslation(humanLanguage, 'display') || 'DISPLAY'} numbers[0]`,
-      stack: `${getTranslation(humanLanguage, 'create') || 'CREATE'} STACK myStack\nPUSH myStack VALUE 10\nPUSH myStack VALUE 20\n${getTranslation(humanLanguage, 'display') || 'DISPLAY'} POP myStack`
+      array: `${getTranslation(humanLanguage, 'create') || 'CREATE'} ARRAY numbers SIZE 5\nSTORE 10 AT numbers[0]\nSTORE 20 AT numbers[1]\n${getTranslation(humanLanguage, 'display') || 'DISPLAY'} "Array created successfully"`,
+      stack: `${getTranslation(humanLanguage, 'create') || 'CREATE'} STACK myStack\nPUSH myStack VALUE 10\nPUSH myStack VALUE 20\n${getTranslation(humanLanguage, 'display') || 'DISPLAY'} "Stack operations completed"`
     };
   };
 

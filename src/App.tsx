@@ -102,23 +102,16 @@ function App() {
     setUserInputs({});
     setExecutionStep(0);
     
-    const lines = code.split('\n').filter(line => line.trim());
-    setProgramLines(lines);
-    
-    // Start execution
-    setTimeout(() => {
-      setIsRunning(false);
-      executeNextLine();
-    }, 1000);
-
-    // Enhanced SRINJAN code execution with proper result handling
+    // Enhanced SRINJAN code execution with immediate result display
     let result = [];
     let variables = {};
     let arrays = {};
     let stacks = {};
     let queues = {};
     let functions = {};
-    let loopStack = [];
+    
+    const lines = code.split('\n').filter(line => line.trim());
+    setProgramLines(lines);
     
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
@@ -261,6 +254,16 @@ function App() {
         result.push(`💾 Stored "${value}" at ${arrayRef}`);
       }
     }
+    
+    // Show results immediately after processing
+    setTimeout(() => {
+      setIsRunning(false);
+      if (result.length > 0) {
+        setOutput(result.join('\n'));
+      } else {
+        setOutput('✅ Code executed successfully!\n🎉 Program completed without output.');
+      }
+    }, 1000);
   };
 
   return (

@@ -33,6 +33,9 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({
   useEffect(() => {
     if (output && output.trim().length > 0) {
       simulateTyping(output);
+    } else if (!isRunning && !output) {
+      // Show ready message when no output
+      setTerminalHistory(['🚀 Terminal ready for code execution']);
     }
   }, [output]);
 
