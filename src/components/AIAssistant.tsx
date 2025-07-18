@@ -673,16 +673,16 @@ ${getTranslatedKeyword('display')} "Ready for next task!"`,
   };
 
   const quickActions = [
-    { label: '🧮 Calculator', action: () => setInputMessage('Create a calculator program') },
-    { label: '🎮 Game', action: () => setInputMessage('Create a number guessing game') },
-    { label: '📊 Data Structures', action: () => setInputMessage('Show me stack and queue operations') },
-    { label: '🔄 Sorting', action: () => setInputMessage('Create a bubble sort algorithm') },
-    { label: '💾 Database', action: () => setInputMessage('Create a student management system') },
-    { label: '📁 File Operations', action: () => setInputMessage('Show me file read and write operations') },
-    { label: '🌐 Web Form', action: () => setInputMessage('Create a web form with validation') },
-    { label: '⚙️ Functions', action: () => setInputMessage('Show me function examples with parameters') },
-    { label: '🔧 Error Handling', action: () => setInputMessage('Show me error handling and debugging') },
-    { label: '🔄 Loops', action: () => setInputMessage('Show me all types of loops') }
+    { label: '🧮 Calculator', action: () => setInputMessage('Create a complete calculator with all operations') },
+    { label: '🔄 All Loops', action: () => setInputMessage('Show me FOR, WHILE, DO-WHILE loops') },
+    { label: '📊 All Data Structures', action: () => setInputMessage('Show me arrays, stacks, queues, linked lists, trees') },
+    { label: '🔢 Matrix Operations', action: () => setInputMessage('Create matrix with mathematical operations') },
+    { label: '🤖 Machine Learning', action: () => setInputMessage('Create a machine learning model') },
+    { label: '📈 Data Science', action: () => setInputMessage('Perform data analysis and visualization') },
+    { label: '🧠 Neural Network', action: () => setInputMessage('Create a neural network') },
+    { label: '🔍 Search Algorithms', action: () => setInputMessage('Show me binary search and linear search') },
+    { label: '🔄 Sort Algorithms', action: () => setInputMessage('Create bubble sort, quick sort, merge sort') },
+    { label: '📊 DataFrame', action: () => setInputMessage('Create and manipulate dataframes') }
   ];
 
   const getCategoryIcon = (category: string) => {

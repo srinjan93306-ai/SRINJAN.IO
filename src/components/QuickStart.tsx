@@ -74,7 +74,8 @@ DISPLAY myList`
     'algorithms': {
       title: 'Algorithms',
       description: 'Implement common algorithms',
-      code: `DEFINE FUNCTION binarySearch(arr, target)
+      code: `// COMPLETE ALGORITHM LIBRARY
+DEFINE FUNCTION binarySearch(arr, target)
   CALCULATE left = 0
   CALCULATE right = SIZE OF arr - 1
   
@@ -90,7 +91,133 @@ DISPLAY myList`
   END REPEAT
   
   RETURN -1
+END FUNCTION
+
+DEFINE FUNCTION quickSort(arr, low, high)
+  IF low < high
+    CALCULATE pivot = partition(arr, low, high)
+    CALL quickSort(arr, low, pivot - 1)
+    CALL quickSort(arr, pivot + 1, high)
+  END IF
+END FUNCTION
+
+DEFINE FUNCTION mergeSort(arr)
+  IF SIZE OF arr <= 1
+    RETURN arr
+  END IF
+  
+  CALCULATE mid = SIZE OF arr / 2
+  CALCULATE left = SLICE arr FROM 0 TO mid
+  CALCULATE right = SLICE arr FROM mid TO END
+  
+  RETURN MERGE(CALL mergeSort(left), CALL mergeSort(right))
 END FUNCTION`
+    },
+    'data-science': {
+      title: 'Data Science & AI',
+      description: 'Complete data science and machine learning',
+      code: `// DATA SCIENCE & MACHINE LEARNING
+CREATE DATAFRAME sales_data
+LOAD DATA FROM "sales.csv" INTO sales_data
+
+// Data Analysis
+CALCULATE mean_sales = MEAN(sales_data.sales)
+CALCULATE median_sales = MEDIAN(sales_data.sales)
+DISPLAY "Average Sales: " + mean_sales
+
+// Machine Learning
+CREATE NEURAL NETWORK model
+SET model.layers = [784, 128, 64, 10]
+SET model.activation = "relu"
+SET model.optimizer = "adam"
+
+TRAIN model WITH training_data FOR 100 EPOCHS
+CALCULATE accuracy = EVALUATE model WITH test_data
+DISPLAY "Model Accuracy: " + accuracy + "%"
+
+// Data Visualization
+CREATE PLOT sales_chart
+PLOT sales_data.month VS sales_data.sales
+SET sales_chart.title = "Monthly Sales Trend"
+SHOW sales_chart`
+    },
+    'complete-loops': {
+      title: 'All Loop Types',
+      description: 'FOR, WHILE, DO-WHILE loops like C/C++',
+      code: `// ALL LOOP TYPES - COMPLETE LIKE C/C++
+
+// FOR Loop
+FOR i FROM 1 TO 10
+  DISPLAY "FOR Loop iteration: " + i
+  IF i EQUALS 5
+    DISPLAY "Halfway there!"
+  END IF
+END FOR
+
+// WHILE Loop
+CALCULATE counter = 1
+WHILE counter <= 5
+  DISPLAY "WHILE Loop: " + counter
+  CALCULATE counter = counter + 1
+END WHILE
+
+// DO-WHILE Loop
+CALCULATE num = 1
+DO
+  DISPLAY "DO-WHILE Loop: " + num
+  CALCULATE num = num + 1
+WHILE num <= 3
+
+// Nested Loops
+FOR row FROM 1 TO 3
+  FOR col FROM 1 TO 3
+    DISPLAY "Position [" + row + "," + col + "]"
+  END FOR
+END FOR`
+    },
+    'all-data-structures': {
+      title: 'Complete Data Structures',
+      description: 'Arrays, Stacks, Queues, Trees, Graphs',
+      code: `// COMPLETE DATA STRUCTURE LIBRARY
+
+// Arrays
+CREATE ARRAY numbers SIZE 10
+FOR i FROM 0 TO 9
+  STORE (i * 2) AT numbers[i]
+END FOR
+SORT numbers
+SEARCH numbers FOR 8
+
+// Stack Operations
+CREATE STACK myStack
+PUSH myStack VALUE 10
+PUSH myStack VALUE 20
+PUSH myStack VALUE 30
+DISPLAY "Popped: " + POP myStack
+
+// Queue Operations
+CREATE QUEUE myQueue
+ENQUEUE myQueue VALUE "First"
+ENQUEUE myQueue VALUE "Second"
+DISPLAY "Dequeued: " + DEQUEUE myQueue
+
+// Linked List
+CREATE LINKED LIST myList
+INSERT myList VALUE 100
+INSERT myList VALUE 200
+INSERT myList VALUE 300
+
+// Binary Tree
+CREATE TREE binaryTree
+INSERT binaryTree ROOT 50
+INSERT binaryTree LEFT 30
+INSERT binaryTree RIGHT 70
+
+// Graph
+CREATE GRAPH socialNetwork
+ADD VERTEX socialNetwork "Alice"
+ADD VERTEX socialNetwork "Bob"
+ADD EDGE socialNetwork "Alice" TO "Bob"`
     }
   };
 
