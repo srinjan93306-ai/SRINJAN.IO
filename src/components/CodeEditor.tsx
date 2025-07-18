@@ -9,6 +9,7 @@ interface CodeEditorProps {
   selectedLanguage: string;
   setSelectedLanguage: (lang: string) => void;
   humanLanguage: string;
+  isRunning?: boolean;
 }
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({
@@ -17,7 +18,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onRun,
   selectedLanguage,
   setSelectedLanguage,
-  humanLanguage
+  humanLanguage,
+  isRunning = false
 }) => {
   const languages = [
     { id: 'srinjan', name: 'SRINJAN', color: 'bg-indigo-500' },
@@ -117,18 +119,32 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           <div className="flex items-center space-x-3">
             <button
               onClick={onRun}
-              className="flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-2 rounded-lg transition-all transform hover:scale-105 shadow-lg"
+              disabled={isRunning}
+              className={`flex items-center space-x-2 px-6 py-2 rounded-lg transition-all transform shadow-lg font-semibold ${
+                isRunning 
+                  ? 'bg-gray-600 cursor-not-allowed' 
+                  : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 hover:scale-105'
+              } text-white`}
             >
-              <Play className="w-4 h-4" />
-              <span className="font-semibold">Execute Code</span>
+              {isRunning ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Executing...</span>
+                </>
+              ) : (
+                <>
+                  <Play className="w-4 h-4" />
+                  <span>Execute Code</span>
+                </>
+              )}
             </button>
             <button className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
               <Square className="w-4 h-4" />
               <span>Stop</span>
             </button>
             <div className="text-sm text-gray-400 flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>Ready to execute</span>
+              <div className={`w-2 h-2 rounded-full ${isRunning ? 'bg-yellow-400 animate-pulse' : 'bg-green-400'}`}></div>
+              <span>{isRunning ? 'Executing...' : 'Ready to execute'}</span>
             </div>
           </div>
           <div className="text-sm text-gray-400">
