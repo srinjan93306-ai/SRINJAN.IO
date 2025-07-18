@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { AIAssistant } from './components/AIAssistant';
+import { TutorialPanel } from './components/TutorialPanel';
 import { DSAReference } from './components/DSAReference';
 import { LanguageConverter } from './components/LanguageConverter';
 import { QuickStart } from './components/QuickStart';
@@ -501,7 +502,7 @@ function App() {
 
         {/* Main Content */}
         {activeTab === 'editor' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             <div className="lg:col-span-2 space-y-6">
               <CodeEditor 
                 code={code} 
@@ -529,6 +530,12 @@ function App() {
                 selectedLanguage={selectedLanguage}
                 humanLanguage={humanLanguage}
                 onCodeSuggestion={setCode}
+              />
+            </div>
+            <div className="lg:col-span-2">
+              <TutorialPanel 
+                onCodeInsert={setCode}
+                selectedLanguage={humanLanguage}
               />
             </div>
           </div>
