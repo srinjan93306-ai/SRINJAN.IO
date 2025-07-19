@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
@@ -8,7 +8,6 @@ import { DSAReference } from './components/DSAReference';
 import { LanguageConverter } from './components/LanguageConverter';
 import { QuickStart } from './components/QuickStart';
 import { MultilingualExamples } from './components/MultilingualExamples';
-import { translateCode } from './utils/languageTranslations';
 
 function App() {
   const [activeTab, setActiveTab] = useState<'editor' | 'dsa' | 'converter' | 'quickstart' | 'multilingual'>('editor');
@@ -24,6 +23,7 @@ function App() {
   const [programLines, setProgramLines] = useState<string[]>([]);
 
   const handleUserInput = (input: string) => {
+    if (!input.trim()) return;
     const currentInputVar = Object.keys(userInputs).length;
     const inputVarName = `input_${currentInputVar}`;
     setUserInputs(prev => ({...prev, [inputVarName]: input}));
@@ -31,6 +31,10 @@ function App() {
     
     // Continue execution with the input
     continueExecution(input);
+  };
+
+  const clearTerminal = () => {
+    setOutput('');
   };
 
   const continueExecution = (userInput?: string) => {
@@ -97,6 +101,10 @@ function App() {
   const runCode = () => {
     if (!code.trim()) return;
     
+    // Reset all state
+    setOutput('');
+    setWaitingForInput(false);
+    setUserInputs({});
     setIsRunning(true);
     setOutput('');
     setWaitingForInput(false);
@@ -104,7 +112,7 @@ function App() {
     setExecutionStep(0);
     
     // COMPLETE SRINJAN EXECUTION ENGINE - ALL FEATURES LIKE C/C++
-    let result = [];
+    let result: string[] = [];
     let variables = {};
     let arrays = {};
     let stacks = {};
@@ -121,6 +129,7 @@ function App() {
     
     const lines = code.split('\n').filter(line => line.trim());
     setProgramLines(lines);
+    if (lines.length === 0) return;
     
     // COMPLETE EXECUTION ENGINE
     for (let i = 0; i < lines.length; i++) {
@@ -129,7 +138,7 @@ function App() {
       if (!trimmed) continue;
       
       // MULTILINGUAL KEYWORD SUPPORT - ALL LANGUAGES
-      const keywords = {
+      const keywords: any = {
         display: ['DISPLAY', 'दिखाएं', 'MOSTRAR', 'প্রদর্শন করুন', 'AFFICHER', 'ANZEIGEN', '表示する', '显示', 'اعرض', 'ПОКАЗАТЬ'],
         input: ['INPUT BY USER', 'उपयोगकर्ता से इनपुट', 'ENTRADA DEL USUARIO', 'ব্যবহারকারীর ইনপুট', 'SAISIE UTILISATEUR', 'BENUTZEREINGABE', 'ユーザー入力', '用户输入', 'إدخال المستخدم', 'ВВОД ПОЛЬЗОВАТЕЛЯ'],
         calculate: ['CALCULATE', 'गणना करें', 'CALCULAR', 'গণনা করুন', 'CALCULER', 'BERECHNEN', '計算する', '计算', 'احسب', 'ВЫЧИСЛИТЬ'],
@@ -154,7 +163,7 @@ function App() {
       let command = null;
       let commandType = null;
       
-      for (const [type, variations] of Object.entries(keywords)) {
+      for (const [type, variations] of Object.entries(keywords) as [string, string[]][]) {
         for (const variation of variations) {
           if (trimmed.startsWith(variation)) {
             command = variation;
@@ -167,7 +176,7 @@ function App() {
 
       // COMPLETE EXECUTION ENGINE - ALL PROGRAMMING CONSTRUCTS
       if (commandType === 'display') {
-        const content = trimmed.substring(command.length).trim();
+        const content = trimmed.substring(command!.length).trim();
         let displayText = content.replace(/['"]/g, '');
         
         // Handle variable substitution
@@ -181,7 +190,7 @@ function App() {
         result.push(displayText);
         
       } else if (commandType === 'input') {
-        const varName = trimmed.substring(command.length).trim();
+        const varName = trimmed.substring(command!.length).trim();
         const inputValue = `Input_${Math.floor(Math.random() * 1000)}`;
         variables[varName] = inputValue;
         result.push(`📝 Input received: ${varName} = "${inputValue}"`);
@@ -189,7 +198,7 @@ function App() {
       } else if (commandType === 'calculate') {
         const expression = trimmed.substring(command.length).trim();
         if (expression.includes('=')) {
-          const [varName, calc] = expression.split('=').map(s => s.trim());
+          const [varName, calc] = expression.split('=').map((s: string) => s.trim());
           let value = calc;
           
           // COMPLETE MATHEMATICAL OPERATIONS
@@ -230,7 +239,7 @@ function App() {
         }
         
       } else if (commandType === 'for') {
-        const forMatch = trimmed.match(/FOR (\w+) FROM (\d+) TO (\d+)/i);
+        const forMatch = trimmed.match(/(?:FOR|के लिए|PARA) (\w+) (?:FROM|से) (\d+) (?:TO|तक) (\d+)/i);
         if (forMatch) {
           const [, varName, start, end] = forMatch;
           const startNum = parseInt(start);
@@ -245,7 +254,7 @@ function App() {
         }
         
       } else if (commandType === 'while') {
-        const condition = trimmed.substring(command.length).trim();
+        const condition = trimmed.substring(command!.length).trim();
         result.push(`🔄 WHILE Loop: ${condition}`);
         let iterations = 0;
         while (iterations < 5) { // Simulate 5 iterations
@@ -255,7 +264,7 @@ function App() {
         result.push(`✅ WHILE Loop completed`);
         
       } else if (commandType === 'dowhile') {
-        const condition = trimmed.substring(command.length).trim();
+        const condition = trimmed.substring(command!.length).trim();
         result.push(`🔄 DO-WHILE Loop: ${condition}`);
         let iterations = 0;
         do {
@@ -265,7 +274,7 @@ function App() {
         result.push(`✅ DO-WHILE Loop completed`);
         
       } else if (commandType === 'repeat') {
-        const times = trimmed.match(/\d+/)?.[0] || '1';
+        const times = trimmed.match(/(\d+)/)?.[1] || '1';
         const iterations = parseInt(times);
         result.push(`🔄 Starting loop (${iterations} iterations):`);
         
@@ -275,7 +284,7 @@ function App() {
         result.push(`✅ Loop completed`);
         
       } else if (commandType === 'create') {
-        if (commandType === 'array' || trimmed.includes('ARRAY') || trimmed.includes('सरणी') || trimmed.includes('ARREGLO')) {
+        if (trimmed.includes('ARRAY') || trimmed.includes('सरणी') || trimmed.includes('ARREGLO')) {
           const parts = trimmed.split(' ');
           const arrayName = parts[2] || 'array';
           const size = trimmed.match(/\d+/)?.[0] || '10';
@@ -283,21 +292,21 @@ function App() {
           result.push(`📊 Created array: ${arrayName}[${size}]`);
           
         } else if (commandType === 'stack' || trimmed.includes('STACK') || trimmed.includes('स्टैक') || trimmed.includes('PILA')) {
-          const parts = trimmed.split(' ');
-          const stackName = parts[2] || 'stack';
+          const stackMatch = trimmed.match(/(?:CREATE|बनाएं|CREAR)\s+(?:STACK|स्टैक|PILA)\s+(\w+)/i);
+          const stackName = stackMatch?.[1] || 'stack';
           stacks[stackName] = [];
           result.push(`📚 Created stack: ${stackName}`);
           
         } else if (commandType === 'queue' || trimmed.includes('QUEUE') || trimmed.includes('कतार') || trimmed.includes('COLA')) {
-          const parts = trimmed.split(' ');
-          const queueName = parts[2] || 'queue';
+          const queueMatch = trimmed.match(/(?:CREATE|बनाएं|CREAR)\s+(?:QUEUE|कतार|COLA)\s+(\w+)/i);
+          const queueName = queueMatch?.[1] || 'queue';
           queues[queueName] = [];
           result.push(`🚶 Created queue: ${queueName}`);
           
         } else if (commandType === 'linkedlist' || trimmed.includes('LINKED LIST')) {
-          const parts = trimmed.split(' ');
-          const listName = parts[3] || 'list';
-          linkedLists[listName] = [];
+          const listMatch = trimmed.match(/(?:CREATE|बनाएं|CREAR)\s+(?:LINKED LIST|लिंक्ड सूची)\s+(\w+)/i);
+          const listName = listMatch?.[1] || 'list';
+          linkedLists[listName] = [] as any[];
           result.push(`🔗 Created linked list: ${listName}`);
           
         } else if (commandType === 'tree' || trimmed.includes('TREE')) {
@@ -313,16 +322,16 @@ function App() {
           result.push(`📈 Created graph: ${graphName}`);
           
         } else if (commandType === 'matrix' || trimmed.includes('MATRIX')) {
-          const parts = trimmed.split(' ');
-          const matrixName = parts[2] || 'matrix';
+          const matrixMatch = trimmed.match(/(?:CREATE|बनाएं|CREAR)\s+(?:MATRIX|मैट्रिक्स)\s+(\w+)/i);
+          const matrixName = matrixMatch?.[1] || 'matrix';
           const rows = trimmed.match(/(\d+)x(\d+)/)?.[1] || '3';
           const cols = trimmed.match(/(\d+)x(\d+)/)?.[2] || '3';
           matrices[matrixName] = Array(parseInt(rows)).fill().map(() => Array(parseInt(cols)).fill(0));
           result.push(`🔢 Created matrix: ${matrixName}[${rows}x${cols}]`);
           
         } else if (commandType === 'dataframe' || trimmed.includes('DATAFRAME')) {
-          const parts = trimmed.split(' ');
-          const dfName = parts[2] || 'dataframe';
+          const dfMatch = trimmed.match(/(?:CREATE|बनाएं|CREAR)\s+(?:DATAFRAME|डेटाफ्रेम)\s+(\w+)/i);
+          const dfName = dfMatch?.[1] || 'dataframe';
           dataFrames[dfName] = { columns: [], data: [] };
           result.push(`📊 Created dataframe: ${dfName}`);
         }
@@ -330,8 +339,8 @@ function App() {
       } else if (trimmed.includes('PUSH') || trimmed.includes('धक्का') || trimmed.includes('EMPUJAR')) {
         const parts = trimmed.split(' ');
         const stackName = parts[1];
-        const value = parts[3] || 'value';
-        if (stacks[stackName]) {
+        const value = parts[4] || 'value';
+        if (stacks[stackName as keyof typeof stacks]) {
           stacks[stackName].push(value);
           result.push(`⬆️ Pushed "${value}" to ${stackName} → [${stacks[stackName].join(', ')}]`);
         }
@@ -339,7 +348,7 @@ function App() {
       } else if (trimmed.includes('POP') || trimmed.includes('निकालें') || trimmed.includes('SACAR')) {
         const parts = trimmed.split(' ');
         const stackName = parts[1];
-        if (stacks[stackName] && stacks[stackName].length > 0) {
+        if (stacks[stackName as keyof typeof stacks] && stacks[stackName].length > 0) {
           const popped = stacks[stackName].pop();
           result.push(`⬇️ Popped "${popped}" from ${stackName} → [${stacks[stackName].join(', ')}]`);
         }
@@ -347,8 +356,8 @@ function App() {
       } else if (trimmed.includes('ENQUEUE') || trimmed.includes('कतार में डालें')) {
         const parts = trimmed.split(' ');
         const queueName = parts[1];
-        const value = parts[3] || 'value';
-        if (queues[queueName]) {
+        const value = parts[4] || 'value';
+        if (queues[queueName as keyof typeof queues]) {
           queues[queueName].push(value);
           result.push(`➡️ Enqueued "${value}" to ${queueName} → [${queues[queueName].join(', ')}]`);
         }
@@ -356,7 +365,7 @@ function App() {
       } else if (trimmed.includes('DEQUEUE') || trimmed.includes('कतार से निकालें')) {
         const parts = trimmed.split(' ');
         const queueName = parts[1];
-        if (queues[queueName] && queues[queueName].length > 0) {
+        if (queues[queueName as keyof typeof queues] && queues[queueName].length > 0) {
           const dequeued = queues[queueName].shift();
           result.push(`⬅️ Dequeued "${dequeued}" from ${queueName} → [${queues[queueName].join(', ')}]`);
         }
@@ -364,7 +373,7 @@ function App() {
       } else if (trimmed.includes('SORT') || trimmed.includes('क्रमबद्ध करें')) {
         const parts = trimmed.split(' ');
         const arrayName = parts[1];
-        if (arrays[arrayName]) {
+        if (arrays[arrayName as keyof typeof arrays]) {
           const sorted = arrays[arrayName].filter(x => x !== null).sort((a, b) => Number(a) - Number(b));
           arrays[arrayName] = sorted;
           result.push(`🔄 Sorted array ${arrayName} → [${sorted.join(', ')}]`);
@@ -374,7 +383,7 @@ function App() {
         const parts = trimmed.split(' ');
         const arrayName = parts[1];
         const searchValue = parts[3];
-        if (arrays[arrayName]) {
+        if (arrays[arrayName as keyof typeof arrays]) {
           const index = arrays[arrayName].indexOf(searchValue);
           result.push(`🔍 Searched for "${searchValue}" in ${arrayName} → Found at index: ${index}`);
         }
@@ -383,7 +392,7 @@ function App() {
         const parts = trimmed.split(' ');
         const listName = parts[2];
         const value = parts[4];
-        if (linkedLists[listName]) {
+        if (linkedLists[listName as keyof typeof linkedLists]) {
           linkedLists[listName].push(value);
           result.push(`➕ Inserted "${value}" into ${listName} → [${linkedLists[listName].join(' → ')}]`);
         }
@@ -394,7 +403,7 @@ function App() {
         result.push(`✅ Condition evaluated: true`);
         
       } else if (commandType === 'function') {
-        const funcName = trimmed.split(' ')[2] || 'function';
+        const funcName = trimmed.match(/(?:DEFINE FUNCTION|फ़ंक्शन परिभाषित करें)\s+(\w+)/i)?.[1] || 'function';
         functions[funcName] = true;
         result.push(`⚙️ Defined function: ${funcName}()`);
         
@@ -430,13 +439,18 @@ function App() {
     // SHOW COMPLETE RESULTS
     setTimeout(() => {
       setIsRunning(false);
-      if (result.length > 0) {
+      if (result && result.length > 0) {
         setOutput(result.join('\n'));
       } else {
         setOutput('✅ Code executed successfully!\n🎉 Program completed without output.');
       }
     }, 1000);
   };
+
+  // Auto-clear terminal when switching tabs
+  useEffect(() => {
+    setOutput('');
+  }, [activeTab]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -519,6 +533,7 @@ function App() {
                 waitingForInput={waitingForInput}
                 inputPrompt={inputPrompt}
                 onUserInput={handleUserInput}
+                onClear={clearTerminal}
                 executionTime="0.002s"
                 memoryUsage="3.1 KB"
                 exitCode={0}
